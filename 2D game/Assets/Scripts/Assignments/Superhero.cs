@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class Superhero : MonoBehaviour
 {
+    string heroName = "Spider-Man";
+    int age = 18;
+    int height = 6;
+    string powers = "Web slinging/wall crawling.";
+
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log(heroName);
+        Debug.Log(age);
+        Debug.Log(height);
+        Debug.Log(powers);
     }
 }
