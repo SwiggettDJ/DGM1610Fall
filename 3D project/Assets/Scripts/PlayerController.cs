@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public float angle = 30;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,11 +21,13 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetAxisRaw("horizontal") == 1)
         {
-            transform.Translate(Vector3.right * Time.fixedUnscaledDeltaTime * 10);
+            //transform.Translate(Vector3.right * Time.fixedUnscaledDeltaTime * 10);
+            transform.Rotate(0, angle * Time.fixedUnscaledDeltaTime, 0);
         }
         if (Input.GetAxisRaw("horizontal") == -1)
         {
-            transform.Translate(Vector3.left * Time.fixedUnscaledDeltaTime * 10);
+            //transform.Translate(Vector3.left * Time.fixedUnscaledDeltaTime * 10);
+            transform.Rotate(0, -angle * Time.fixedUnscaledDeltaTime, 0);
         }
     }
 }
