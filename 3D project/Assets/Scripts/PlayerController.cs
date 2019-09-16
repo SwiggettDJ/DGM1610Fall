@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float angle = 30;
+    public float speed = 30;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,19 +16,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //makes the vehicle move
-        if (Input.GetAxisRaw("forward") == 1)
-        {
-            transform.Translate(Vector3.forward * Time.fixedUnscaledDeltaTime * 20);
-        }
-        if (Input.GetAxisRaw("horizontal") == 1)
-        {
-            //transform.Translate(Vector3.right * Time.fixedUnscaledDeltaTime * 10);
-            transform.Rotate(0, angle * Time.fixedUnscaledDeltaTime, 0);
-        }
-        if (Input.GetAxisRaw("horizontal") == -1)
-        {
-            //transform.Translate(Vector3.left * Time.fixedUnscaledDeltaTime * 10);
-            transform.Rotate(0, -angle * Time.fixedUnscaledDeltaTime, 0);
-        }
+            transform.Translate(Vector3.forward * Input.GetAxisRaw("forward") * Time.fixedUnscaledDeltaTime * speed);
+
+            transform.Rotate(Vector3.up, angle * Input.GetAxisRaw("horizontal") * Time.fixedUnscaledDeltaTime, 0);
     }
 }
