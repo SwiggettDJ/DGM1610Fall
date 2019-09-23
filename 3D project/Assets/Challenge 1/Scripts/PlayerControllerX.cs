@@ -5,12 +5,12 @@ using UnityEngine;
 public class PlayerControllerX : MonoBehaviour
 {
     private float speed = 10;
-    public float rotationSpeed = 300;
+    private float rotationSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        rotationSpeed = 100f;
     }
 
     // Update is called once per frame
@@ -21,6 +21,6 @@ public class PlayerControllerX : MonoBehaviour
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
         // tilt the plane up/down based on up/down arrow keys
-        transform.Rotate(Vector3.down, Input.GetAxis("Vertical") * rotationSpeed * Time.deltaTime);
+        transform.Rotate(Vector3.right, Input.GetAxis("Vertical") * rotationSpeed * Time.deltaTime);
     }
 }
