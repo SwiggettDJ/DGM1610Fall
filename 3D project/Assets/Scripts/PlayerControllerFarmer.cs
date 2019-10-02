@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerControllerFarmer : MonoBehaviour
 {   public float horizontalInput;
     public GameObject projectilePrefab;
-    private float speed = 10f;
-    private float xRange = 10f;
+    private float speed = 30f;
+    private float xRange = 15f;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +16,7 @@ public class PlayerControllerFarmer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
+        horizontalInput = Input.GetAxisRaw("Horizontal");
         transform.Translate(Vector3.right * horizontalInput * Time.deltaTime * speed);
         if (transform.position.x < -xRange)
         {
@@ -28,7 +28,7 @@ public class PlayerControllerFarmer : MonoBehaviour
             transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
             horizontalInput = 0;
         }
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Instantiate(projectilePrefab, new Vector3(transform.position.x, transform.position.y + 1, transform.position.z + 0.5f), transform.rotation);
         }
