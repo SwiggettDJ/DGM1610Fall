@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        body.angularVelocity = new Vector3(0, 0, 0);
+
         if (Input.GetKey(KeyCode.UpArrow))
         {
             body.AddRelativeForce(Vector3.forward * speed * Time.deltaTime);
@@ -31,6 +33,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow))
         {
             body.transform.Rotate(new Vector3(body.transform.rotation.x, body.transform.rotation.y + 2, body.transform.rotation.z));
+        }
+        if (Input.GetKeyDown("space"))
+        {
+            body.AddRelativeForce(new Vector3(0,1,0) * jumpHeight);
         }
     }
 }
