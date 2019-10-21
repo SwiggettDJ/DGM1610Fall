@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float jumpHeight;
     public Rigidbody body;
+    public Transform cameraTarget;
+    private float forward, horizontal;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,23 +19,18 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         body.angularVelocity = new Vector3(0, 0, 0);
+        forward = Input.GetAxis("Forward");
+        horizontal = Input.GetAxis("Horizontal");
 
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (forward != 0)
         {
-            body.AddRelativeForce(Vector3.forward * speed * Time.deltaTime);
+            body.AddRelativeForce(Vector3.forward * forward * speed * Time.deltaTime);
         }
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (horizontal != 0)
         {
-            body.AddRelativeForce(Vector3.back * speed * Time.deltaTime);
+            body.AddRelativeForce(Vector3.right * horizontal * speed * Time.deltaTime);
         }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            body.transform.Rotate(new Vector3(body.transform.rotation.x, body.transform.rotation.y - 2, body.transform.rotation.z));
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            body.transform.Rotate(new Vector3(body.transform.rotation.x, body.transform.rotation.y + 2, body.transform.rotation.z));
-        }
+        
         if (Input.GetKeyDown("space"))
         {
             body.AddRelativeForce(new Vector3(0,1,0) * jumpHeight);
