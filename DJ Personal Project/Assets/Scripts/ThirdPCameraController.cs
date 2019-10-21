@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ThirdPCameraController : MonoBehaviour
 {
-    public float sensitivityX = 1.2f;
+    public float sensitivityX = 1f;
     public float sensitivityY = 1.8f;
     public Transform target;
     public Transform player;
