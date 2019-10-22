@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float forSpeed, horSpeed, slipSpeed, ogSpeed;
+    public float forSpeed, horSpeed;
+    private float slipSpeed, ogSpeed;
     private float slipMultiplier = 5f;
     public float jumpHeight;
     public Rigidbody body;
