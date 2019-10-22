@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         PlayerMovement();
+        TooHigh();
     }
 
     //Adds forces to the Player's Rigidbody when recieving the corresponding Input
@@ -63,6 +64,15 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Slippery"))
         {
             forSpeed = ogSpeed;
+        }
+    }
+
+    private void TooHigh()
+    {
+        if(body.transform.position.y > 20)
+        {
+            body.transform.position = new Vector3(body.transform.position.x, 20, body.transform.position.z);
+            body.velocity = new Vector3(body.velocity.x, 0, body.velocity.z);
         }
     }
 }
