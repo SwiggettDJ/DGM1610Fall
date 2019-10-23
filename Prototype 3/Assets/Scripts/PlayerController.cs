@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
     public float gravityMultiplier;
     private bool isGrounded;
     public bool gameOver = false;
+    public ParticleSystem dirt;
+
+    public ParticleSystem explosion;
 
     private Animator playerAnim;
 
@@ -28,6 +31,7 @@ public class PlayerController : MonoBehaviour
             playerRB.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
             playerAnim.SetTrigger("Jump_trig");
+            dirt.Stop();
         }
     }
 
@@ -36,6 +40,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+            dirt.Play();
         }
         else if(collision.gameObject.CompareTag("Obstacle"))
         {
@@ -43,6 +48,8 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Game Over!");
             playerAnim.SetBool("Death_b", true);
             playerAnim.SetInteger("DeathType_int", 1);
+            explosion.Play();
+            dirt.Stop();
         }
     }
 }
