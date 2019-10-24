@@ -6,22 +6,35 @@ public class PlayerController : MonoBehaviour
 {
     public float forSpeed, horSpeed;
     private float slipSpeed, ogSpeed;
-    private float slipMultiplier = 5f;
-    public float jumpHeight;
-    public Rigidbody body;
-    public Transform cameraTarget;
     private float forward, horizontal;
+    private float slipMultiplier = 5f;
+
+    public Rigidbody body;
+    public float jumpHeight = 35;
+    public Transform cameraTarget;
+    private bool playerDeath;
+    private TrailRenderer trail;
+
+    //Sets the starting pos
+    private Vector3 respawnPoint =  new Vector3(0, 1, 0);
 
 
     private void Start()
     {
         slipSpeed = forSpeed * slipMultiplier;
         ogSpeed = forSpeed;
+        playerDeath = false;
+        transform.position = respawnPoint;
+        trail = gameObject.GetComponent<TrailRenderer>();
     }
     // Update is called once per frame
     void Update()
     {
-        PlayerMovement();
+        //So player can't move while respawning
+        if (playerDeath == false)
+        {
+            PlayerMovement();
+        }
         TooHigh();
     }
 
@@ -57,6 +70,14 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Slippery"))
         {
             forSpeed = slipSpeed;
+        }
+        if (collision.gameObject.CompareTag("Lava"))
+        {
+            playerDeath = true;
+            body.velocity = new Vector3(0, 0, 0);
+            transform.position = respawnPoint;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            playerDeath = false;
         }
     }
 
