@@ -8,12 +8,13 @@ public class PlayerController : MonoBehaviour
     private float slipSpeed, ogSpeed;
     private float forward, horizontal;
     private float slipMultiplier = 5f;
+    private float nextJump = 0.0f;
+    private float interval = 0.3f;
 
     public Rigidbody body;
     public float jumpHeight = 35;
     public Transform cameraTarget;
-    private bool playerDeath;
-    private TrailRenderer trail;
+    public bool playerDeath;
 
     //Sets the starting pos
     private Vector3 respawnPoint =  new Vector3(0, 1, 0);
@@ -25,17 +26,20 @@ public class PlayerController : MonoBehaviour
         ogSpeed = forSpeed;
         playerDeath = false;
         transform.position = respawnPoint;
-        trail = gameObject.GetComponent<TrailRenderer>();
     }
     // Update is called once per frame
     void Update()
     {
+        TooHigh();
         //So player can't move while respawning
         if (playerDeath == false)
         {
             PlayerMovement();
         }
-        TooHigh();
+
+        //playerDeath gets set to false again here instead of in OnCollision because this is the only way for the 
+        //camera controller to see that playerDeath is true so it can reset to (0 0 0)
+        playerDeath = false;
     }
 
     //Adds forces to the Player's Rigidbody when recieving the corresponding Input
@@ -58,8 +62,10 @@ public class PlayerController : MonoBehaviour
         }
 
         //Jump force
-        if (Input.GetKeyDown("space"))
+        if (Input.GetKeyDown("space") && Time.time > nextJump)
         {
+            //makes it so jump can only be pressed every interval
+            nextJump = Time.time + interval;
             body.AddRelativeForce(new Vector3(0, 1, 0) * jumpHeight);
         }
     }
@@ -73,11 +79,7 @@ public class PlayerController : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Lava"))
         {
-            playerDeath = true;
-            body.velocity = new Vector3(0, 0, 0);
-            transform.position = respawnPoint;
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-            playerDeath = false;
+            KillPlayer();
         }
     }
 
@@ -89,12 +91,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //makes sure you don't try to fly too high... will probably put left and right bounds here too
     private void TooHigh()
     {
-        if(body.transform.position.y > 20)
+        if(body.transform.position.y > 25)
         {
-            body.transform.position = new Vector3(body.transform.position.x, 20, body.transform.position.z);
+            body.transform.position = new Vector3(body.transform.position.x, 25, body.transform.position.z);
             body.velocity = new Vector3(body.velocity.x, 0, body.velocity.z);
         }
+        if (body.transform.position.y < -5)
+        {
+            KillPlayer();
+        }
+    }
+
+    private void KillPlayer()
+    {
+        //resets player position to last checkpoint
+        playerDeath = true;
+        body.velocity = new Vector3(0, 0, 0);
+        transform.position = respawnPoint;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
     }
 }
