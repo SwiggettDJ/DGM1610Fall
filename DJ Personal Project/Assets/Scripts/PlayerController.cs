@@ -11,13 +11,12 @@ public class PlayerController : MonoBehaviour
     private float nextJump = 0.0f;
     private float interval = 0.3f;
 
+    private CheckPoint lastCheckPoint;
+
     public Rigidbody body;
     public float jumpHeight = 35;
     public Transform cameraTarget;
     public bool playerDeath;
-
-    //Sets the starting pos
-    private Vector3 respawnPoint =  new Vector3(0, 1, 0);
 
 
     private void Start()
@@ -25,7 +24,15 @@ public class PlayerController : MonoBehaviour
         slipSpeed = forSpeed * slipMultiplier;
         ogSpeed = forSpeed;
         playerDeath = false;
-        transform.position = respawnPoint;
+        foreach(GameObject test in GameObject.FindGameObjectsWithTag("CheckPoint"))
+        {
+            if(test.GetComponent<CheckPoint>().order == 1)
+            {
+                lastCheckPoint = test.GetComponent<CheckPoint>();
+            }
+        }
+        
+        transform.position = lastCheckPoint.pos;
     }
     // Update is called once per frame
     void Update()
@@ -110,7 +117,7 @@ public class PlayerController : MonoBehaviour
         //resets player position to last checkpoint
         playerDeath = true;
         body.velocity = new Vector3(0, 0, 0);
-        transform.position = respawnPoint;
+        transform.position = lastCheckPoint.pos;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
     }
 }

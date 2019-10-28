@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Slippery
   - Lava
+  - CheckPoint
   layers:
   - Default
   - TransparentFX

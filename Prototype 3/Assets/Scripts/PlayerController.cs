@@ -11,6 +11,10 @@ public class PlayerController : MonoBehaviour
     public bool gameOver = false;
     public ParticleSystem dirt;
 
+    public AudioClip jumpSound;
+    public AudioClip crashSound;
+    private AudioSource playerAudio;
+
     public ParticleSystem explosion;
 
     private Animator playerAnim;
@@ -21,6 +25,7 @@ public class PlayerController : MonoBehaviour
         playerRB = GetComponent<Rigidbody>();
         playerAnim = GetComponent<Animator>();
         Physics.gravity *= gravityMultiplier;
+        playerAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -32,6 +37,7 @@ public class PlayerController : MonoBehaviour
             isGrounded = false;
             playerAnim.SetTrigger("Jump_trig");
             dirt.Stop();
+            playerAudio.PlayOneShot(jumpSound, 1.0f);
         }
     }
 
@@ -50,6 +56,12 @@ public class PlayerController : MonoBehaviour
             playerAnim.SetInteger("DeathType_int", 1);
             explosion.Play();
             dirt.Stop();
+            playerAudio.PlayOneShot(crashSound, 1.0f);
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
     }
 }
