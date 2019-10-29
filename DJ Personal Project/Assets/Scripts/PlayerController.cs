@@ -120,4 +120,12 @@ public class PlayerController : MonoBehaviour
         transform.position = lastCheckPoint.pos;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("CheckPoint"))
+        {
+            lastCheckPoint = other.GetComponent<CheckPoint>();
+        }
+    }
 }
