@@ -858,7 +858,7 @@ PrefabInstance:
     - target: {fileID: 7944129395880171262, guid: fa71d828ab063a14ca8f16466907710c,
         type: 3}
       propertyPath: m_Name
-      value: Emitter (1)
+      value: Hover Emitter
       objectReference: {fileID: 0}
     - target: {fileID: 7944129395880171250, guid: fa71d828ab063a14ca8f16466907710c,
         type: 3}
