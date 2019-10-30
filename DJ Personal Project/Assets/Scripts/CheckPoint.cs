@@ -17,4 +17,9 @@ public class CheckPoint : MonoBehaviour
         blueLight = gameObject.GetComponent<Light>();
         blueParticles = gameObject.GetComponent<ParticleSystem>();
     }
+
+    public void TurnOff()
+    {
+
+    }
 }
