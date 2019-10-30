@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     private float slipSpeed, ogSpeed, groundSpeed;
     private float forward, horizontal;
     private float slipMultiplier = 5f;
-    private float groundMultiplier = 1.5f;
+    private float groundMultiplier = 1.8f;
     private float nextJump = 0.0f;
     private float interval = 0.3f;
 

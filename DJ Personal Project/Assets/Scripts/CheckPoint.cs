@@ -8,8 +8,13 @@ public class CheckPoint : MonoBehaviour
     public int nextPar;
     public int order;
 
+    private ParticleSystem blueParticles;
+    private Light blueLight;
+
     private void Start()
     {
-        pos = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+        pos = new Vector3(transform.position.x, transform.position.y + 1.05f, transform.position.z);
+        blueLight = gameObject.GetComponent<Light>();
+        blueParticles = gameObject.GetComponent<ParticleSystem>();
     }
 }
