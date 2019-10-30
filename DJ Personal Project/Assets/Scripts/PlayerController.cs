@@ -5,9 +5,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float forSpeed, horSpeed;
-    private float slipSpeed, ogSpeed;
+    private float slipSpeed, ogSpeed, groundSpeed;
     private float forward, horizontal;
     private float slipMultiplier = 5f;
+    private float groundMultiplier = 1.5f;
     private float nextJump = 0.0f;
     private float interval = 0.3f;
 
@@ -21,9 +22,14 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        //Sets groundSpeed and slipSpeed using the multiplier and the public forSpeed. These are the speeds you will be set to while on the ground or a slippery slope
+        groundSpeed = forSpeed * groundMultiplier;
         slipSpeed = forSpeed * slipMultiplier;
+        //Need an original speed to return to
         ogSpeed = forSpeed;
+
         playerDeath = false;
+
         foreach(GameObject test in GameObject.FindGameObjectsWithTag("CheckPoint"))
         {
             if(test.GetComponent<CheckPoint>().order == 1)
@@ -80,7 +86,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Slippery"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            forSpeed = groundSpeed;
+        }
+        else if (collision.gameObject.CompareTag("Slippery"))
         {
             forSpeed = slipSpeed;
         }
@@ -92,10 +102,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Slippery"))
-        {
+        //Whenever you're in the air your speed goes back to normal
             forSpeed = ogSpeed;
-        }
     }
 
     //makes sure you don't try to fly too high... will probably put left and right bounds here too
