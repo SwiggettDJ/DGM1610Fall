@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     private float slipSpeed, ogSpeed, groundSpeed;
     private float forward, horizontal;
     private float slipMultiplier = 5f;
-    private float groundMultiplier = 1.8f;
+    private float groundMultiplier = 2f;
     private float nextJump = 0.0f;
     private float interval = 0.3f;
 
@@ -35,10 +35,18 @@ public class PlayerController : MonoBehaviour
             if(test.GetComponent<CheckPoint>().order == 1)
             {
                 lastCheckPoint = test.GetComponent<CheckPoint>();
+                foreach (GameObject secondTest in GameObject.FindGameObjectsWithTag("CheckPoint"))
+                {
+                    if (secondTest.GetComponent<CheckPoint>().order == lastCheckPoint.order + 1)
+                    {
+                        secondTest.GetComponent<CheckPoint>().TurnOn();
+                    }
+                }
             }
         }
-        
         transform.position = lastCheckPoint.pos;
+        
+        //transform.position = lastCheckPoint.pos;
     }
     // Update is called once per frame
     void Update()
@@ -131,9 +139,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("CheckPoint"))
+        //Finds the next checkpoint by seeing which one is active
+        if (other.gameObject.CompareTag("CheckPoint") && other.gameObject.GetComponent<CheckPoint>().active)
         {
+            //Makes the new checkpoint the current one and activates the next one in the order
             lastCheckPoint = other.GetComponent<CheckPoint>();
+            lastCheckPoint.TurnOff();
+            foreach (GameObject test in GameObject.FindGameObjectsWithTag("CheckPoint"))
+            {
+                if (test.GetComponent<CheckPoint>().order == lastCheckPoint.order + 1)
+                {
+                    test.GetComponent<CheckPoint>().TurnOn();
+                }
+            }
         }
     }
 }
