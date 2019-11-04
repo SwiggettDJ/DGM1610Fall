@@ -4,26 +4,49 @@ using UnityEngine;
 
 public class Wobble : MonoBehaviour
 {
+    public bool vert;
+    public int max;
+    public int min;
     private bool down = false;
+    private bool left = false;
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.y > 16) down = true;
-        if (transform.position.y < 14) down = false;
+        if (transform.position.y > max) down = true;
+        if (transform.position.y < min) down = false;
 
-        if (down)
+        if (transform.position.x > max) left = true;
+        if (transform.position.x < min) left = false;
+
+        if (vert)
         {
-            transform.Translate(new Vector3(0, Random.Range(.1f, .4f) * Time.deltaTime, 0));
+            if (down)
+            {
+                transform.Translate(new Vector3(0, Random.Range(.1f, .5f) * Time.deltaTime,0));
+            }
+            else
+            {
+                transform.Translate(new Vector3(0, Random.Range(-.1f, -.5f) * Time.deltaTime,0));
+            }
         }
-        else
+        
+        if(!vert)
         {
-            transform.Translate(new Vector3(0, Random.Range(-.1f, -.4f) * Time.deltaTime, 0));
+            if (left)
+            {
+                transform.Translate(new Vector3(Random.Range(-.1f, -.5f) * Time.deltaTime, 0 ,0));
+            }
+            else
+            {
+                transform.Translate(new Vector3(Random.Range(.1f, .5f) * Time.deltaTime,0 ,0));
+            }
         }
+        
+        
     }
 }
