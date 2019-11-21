@@ -25,7 +25,12 @@ public class PlayerController : MonoBehaviour
     public bool playerDeath;
 
     public TextMeshProUGUI jumpsText;
+    public TextMeshProUGUI jumpsHighlightText;
     public TextMeshProUGUI parText;
+    public TextMeshProUGUI parHighlightText;
+    public int score = 0;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI scoreHighlightText;
 
     private void Start()
     {
@@ -55,6 +60,7 @@ public class PlayerController : MonoBehaviour
         transform.position = lastCheckPoint.pos;
         par = lastCheckPoint.nextPar;
         parText.text = "Par: " + par;
+        parHighlightText.text = "Par: " + par;
 
     }
     // Update is called once per frame
@@ -99,6 +105,7 @@ public class PlayerController : MonoBehaviour
             body.AddRelativeForce(new Vector3(0, 1, 0) * jumpHeight);
             jumps ++;
             setJumps();
+            StartCoroutine(Flash(jumpsHighlightText));
         }
     }
 
@@ -165,9 +172,15 @@ public class PlayerController : MonoBehaviour
                     test.GetComponent<CheckPoint>().TurnOn();
                 }
             }
+            score += par - totalJumps;
             setJumps(0);
             par = lastCheckPoint.nextPar;
             parText.text = "Par: " + par;
+            parHighlightText.text = "Par: " + par;
+            scoreText.text = "Score: " + score;
+            scoreHighlightText.text = "Score: " + score;
+            StartCoroutine(Flash(scoreHighlightText));
+            StartCoroutine(Flash(parHighlightText));
         }
     }
 
@@ -175,10 +188,19 @@ public class PlayerController : MonoBehaviour
     {
         totalJumps ++;
         jumpsText.text = "Jumps: " + totalJumps;
+        jumpsHighlightText.text = "Jumps: " + totalJumps;
     }
     private void setJumps(int jumpsToSet)
     {
         totalJumps = jumpsToSet;
         jumpsText.text = "Jumps: " + totalJumps;
+        jumpsHighlightText.text = "Jumps: " + totalJumps;
+    }
+
+    private IEnumerator Flash(TextMeshProUGUI flash)
+    {
+        flash.gameObject.SetActive(true);
+        yield return new WaitForSeconds(.2f);
+        flash.gameObject.SetActive(false);
     }
 }
