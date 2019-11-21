@@ -10,7 +10,9 @@ public class PlayerController : MonoBehaviour
     private float slipMultiplier = 5f;
     private float groundMultiplier = 2f;
     private float nextJump = 0.0f;
-    private float interval = 0.3f;
+    private float interval = 0.2f;
+    private int maxJumps = 2;
+    private int jumps;
 
     private CheckPoint lastCheckPoint;
 
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        jumps = 0;
         //Sets groundSpeed and slipSpeed using the multiplier and the public forSpeed. These are the speeds you will be set to while on the ground or a slippery slope
         groundSpeed = forSpeed * groundMultiplier;
         slipSpeed = forSpeed * slipMultiplier;
@@ -46,7 +49,6 @@ public class PlayerController : MonoBehaviour
         }
         transform.position = lastCheckPoint.pos;
         
-        //transform.position = lastCheckPoint.pos;
     }
     // Update is called once per frame
     void Update()
@@ -83,11 +85,12 @@ public class PlayerController : MonoBehaviour
         }
 
         //Jump force
-        if (Input.GetKeyDown("space") && Time.time > nextJump)
+        if (Input.GetKeyDown("space") && Time.time > nextJump && jumps < maxJumps)
         {
             //makes it so jump can only be pressed every interval
             nextJump = Time.time + interval;
             body.AddRelativeForce(new Vector3(0, 1, 0) * jumpHeight);
+            jumps += 1;
         }
     }
 
@@ -106,6 +109,7 @@ public class PlayerController : MonoBehaviour
         {
             KillPlayer();
         }
+        jumps = 0;
     }
 
     private void OnCollisionExit(Collision collision)

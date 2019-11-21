@@ -6,7 +6,7 @@ public class ThirdPCameraController : MonoBehaviour
 {
     private PlayerController playerControllerScript;
 
-    public float sensitivityX = 1f;
+    public float sensitivityX = 2f;
     public float sensitivityY = 1.8f;
     public Transform target;
     public Transform player;
