@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,19 +13,23 @@ public class PlayerController : MonoBehaviour
     private float nextJump = 0.0f;
     private float interval = 0.2f;
     private int maxJumps = 2;
-    private int jumps;
+    private int jumps = 0;
+    private int totalJumps = -1;
 
     private CheckPoint lastCheckPoint;
+    private int par;
 
     public Rigidbody body;
     public float jumpHeight = 35;
     public Transform cameraTarget;
     public bool playerDeath;
 
+    public TextMeshProUGUI jumpsText;
+    public TextMeshProUGUI parText;
 
     private void Start()
     {
-        jumps = 0;
+        setJumps();
         //Sets groundSpeed and slipSpeed using the multiplier and the public forSpeed. These are the speeds you will be set to while on the ground or a slippery slope
         groundSpeed = forSpeed * groundMultiplier;
         slipSpeed = forSpeed * slipMultiplier;
@@ -48,7 +53,9 @@ public class PlayerController : MonoBehaviour
             }
         }
         transform.position = lastCheckPoint.pos;
-        
+        par = lastCheckPoint.nextPar;
+        parText.text = "Par: " + par;
+
     }
     // Update is called once per frame
     void Update()
@@ -90,7 +97,8 @@ public class PlayerController : MonoBehaviour
             //makes it so jump can only be pressed every interval
             nextJump = Time.time + interval;
             body.AddRelativeForce(new Vector3(0, 1, 0) * jumpHeight);
-            jumps += 1;
+            jumps ++;
+            setJumps();
         }
     }
 
@@ -139,6 +147,7 @@ public class PlayerController : MonoBehaviour
         body.velocity = new Vector3(0, 0, 0);
         transform.position = lastCheckPoint.pos;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        setJumps(0);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -156,6 +165,20 @@ public class PlayerController : MonoBehaviour
                     test.GetComponent<CheckPoint>().TurnOn();
                 }
             }
+            setJumps(0);
+            par = lastCheckPoint.nextPar;
+            parText.text = "Par: " + par;
         }
+    }
+
+    private void setJumps()
+    {
+        totalJumps ++;
+        jumpsText.text = "Jumps: " + totalJumps;
+    }
+    private void setJumps(int jumpsToSet)
+    {
+        totalJumps = jumpsToSet;
+        jumpsText.text = "Jumps: " + totalJumps;
     }
 }
