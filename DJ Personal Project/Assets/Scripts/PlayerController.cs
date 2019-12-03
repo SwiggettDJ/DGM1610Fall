@@ -16,8 +16,7 @@ public class PlayerController : MonoBehaviour
     private int jumps = 0;
     private int totalJumps = -1;
 
-    private CheckPoint lastCheckPoint;
-    private int par;
+    private CheckPointChecker checkPointChecker;
 
     public Rigidbody body;
     public float jumpHeight = 35;
@@ -43,25 +42,7 @@ public class PlayerController : MonoBehaviour
 
         playerDeath = false;
 
-        foreach(GameObject test in GameObject.FindGameObjectsWithTag("CheckPoint"))
-        {
-            if(test.GetComponent<CheckPoint>().order == 1)
-            {
-                lastCheckPoint = test.GetComponent<CheckPoint>();
-                foreach (GameObject secondTest in GameObject.FindGameObjectsWithTag("CheckPoint"))
-                {
-                    if (secondTest.GetComponent<CheckPoint>().order == lastCheckPoint.order + 1)
-                    {
-                        secondTest.GetComponent<CheckPoint>().TurnOn();
-                    }
-                }
-            }
-        }
-        transform.position = lastCheckPoint.pos;
-        par = lastCheckPoint.nextPar;
-        parText.text = "Par: " + par;
-        parHighlightText.text = "Par: " + par;
-
+        checkPointChecker = GameObject.Find("CheckPoint Checker").GetComponent<CheckPointChecker>();
     }
     // Update is called once per frame
     void Update()
@@ -152,7 +133,7 @@ public class PlayerController : MonoBehaviour
         //resets player position to last checkpoint
         playerDeath = true;
         body.velocity = new Vector3(0, 0, 0);
-        transform.position = lastCheckPoint.pos;
+        transform.position = checkPointChecker.lastCheckPoint.pos;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         setJumps(0);
     }
@@ -162,21 +143,12 @@ public class PlayerController : MonoBehaviour
         //Finds the next checkpoint by seeing which one is active
         if (other.gameObject.CompareTag("CheckPoint") && other.gameObject.GetComponent<CheckPoint>().active)
         {
-            //Makes the new checkpoint the current one and activates the next one in the order
-            lastCheckPoint = other.GetComponent<CheckPoint>();
-            lastCheckPoint.TurnOff();
-            foreach (GameObject test in GameObject.FindGameObjectsWithTag("CheckPoint"))
-            {
-                if (test.GetComponent<CheckPoint>().order == lastCheckPoint.order + 1)
-                {
-                    test.GetComponent<CheckPoint>().TurnOn();
-                }
-            }
-            score += par - totalJumps;
+            checkPointChecker.Check(other);
+            score += checkPointChecker.par - totalJumps;
             setJumps(0);
-            par = lastCheckPoint.nextPar;
-            parText.text = "Par: " + par;
-            parHighlightText.text = "Par: " + par;
+            checkPointChecker.par = checkPointChecker.lastCheckPoint.nextPar;
+            parText.text = "Par: " + checkPointChecker.par;
+            parHighlightText.text = "Par: " + checkPointChecker.par;
             scoreText.text = "Score: " + score;
             scoreHighlightText.text = "Score: " + score;
             StartCoroutine(Flash(scoreHighlightText));
