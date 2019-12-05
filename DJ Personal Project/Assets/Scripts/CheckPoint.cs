@@ -8,7 +8,6 @@ public class CheckPoint : MonoBehaviour
     public int nextPar;
     public int order;
     public bool active;
-    public bool toggle;
 
     private ParticleSystem blueParticles;
     private Light blueLight;
@@ -22,21 +21,19 @@ public class CheckPoint : MonoBehaviour
         blueParticles.Stop();
     }
 
-    private void Update()
+    public void Toggle()
     {
-        if(!active && toggle)
+        if(!active)
         {
             blueLight.enabled = true;
             blueParticles.Play();
             active = true;
-            toggle = false;
         }
-        if (active && toggle)
+        else
         {
             blueLight.enabled = false;
             blueParticles.Stop();
             active = false;
-            toggle = false;
         }
     }
 }

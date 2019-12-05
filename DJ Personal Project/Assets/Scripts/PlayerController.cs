@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     private float interval = 0.2f;
     private int maxJumps = 2;
     private int jumps = 0;
-    private int totalJumps = -1;
+    public int totalJumps = -1;
 
     private CheckPointChecker checkPointChecker;
 
@@ -25,11 +25,7 @@ public class PlayerController : MonoBehaviour
 
     public TextMeshProUGUI jumpsText;
     public TextMeshProUGUI jumpsHighlightText;
-    public TextMeshProUGUI parText;
-    public TextMeshProUGUI parHighlightText;
-    public int score = 0;
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI scoreHighlightText;
+
 
     private void Start()
     {
@@ -144,26 +140,24 @@ public class PlayerController : MonoBehaviour
         //Finds the next checkpoint by seeing which one is active
         if (other.gameObject.CompareTag("CheckPoint") && other.gameObject.GetComponent<CheckPoint>().active)
         {
+            //turn the collided checkpoint off
+            other.gameObject.GetComponent<CheckPoint>().Toggle();
+            //send the collider to CheckPointChecker to be replace lastCheckPoint
             checkPointChecker.Check(other);
-            score += checkPointChecker.par - totalJumps;
-            setJumps(0);
-            checkPointChecker.par = checkPointChecker.lastCheckPoint.nextPar;
-            parText.text = "Par: " + checkPointChecker.par;
-            parHighlightText.text = "Par: " + checkPointChecker.par;
-            scoreText.text = "Score: " + score;
-            scoreHighlightText.text = "Score: " + score;
-            StartCoroutine(Flash(scoreHighlightText));
-            StartCoroutine(Flash(parHighlightText));
+
+            //flash the new score and par
+            StartCoroutine(Flash(checkPointChecker.scoreHighlightText));
+            StartCoroutine(Flash(checkPointChecker.parHighlightText));
         }
     }
 
-    private void setJumps()
+    public void setJumps()
     {
         totalJumps ++;
         jumpsText.text = "Jumps: " + totalJumps;
         jumpsHighlightText.text = "Jumps: " + totalJumps;
     }
-    private void setJumps(int jumpsToSet)
+    public void setJumps(int jumpsToSet)
     {
         totalJumps = jumpsToSet;
         jumpsText.text = "Jumps: " + totalJumps;
