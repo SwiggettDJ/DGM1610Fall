@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
 
         playerDeath = false;
 
+
         checkPointChecker = GameObject.Find("CheckPoint Checker").GetComponent<CheckPointChecker>();
     }
     // Update is called once per frame
