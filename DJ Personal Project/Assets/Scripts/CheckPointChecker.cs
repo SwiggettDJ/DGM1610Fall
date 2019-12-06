@@ -37,6 +37,9 @@ public class CheckPointChecker : MonoBehaviour
         transform.position = lastCheckPoint.pos;
         parText.text = "Par: " + lastCheckPoint.nextPar;
         parHighlightText.text = "Par: " + lastCheckPoint.nextPar;
+
+        player.transform.position = lastCheckPoint.pos;
+        player.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
     }
 
 

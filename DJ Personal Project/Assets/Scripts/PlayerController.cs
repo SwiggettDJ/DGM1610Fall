@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
 
         checkPointChecker = GameObject.Find("CheckPoint Checker").GetComponent<CheckPointChecker>();
         playerAudio = GetComponent<AudioSource>();
+        setJumps(0);
     }
     // Update is called once per frame
     void Update()
