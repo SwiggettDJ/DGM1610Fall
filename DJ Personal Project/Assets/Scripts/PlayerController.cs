@@ -26,6 +26,9 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI jumpsText;
     public TextMeshProUGUI jumpsHighlightText;
 
+    public AudioClip jumpSound;
+    private AudioSource playerAudio;
+
 
     private void Start()
     {
@@ -40,6 +43,7 @@ public class PlayerController : MonoBehaviour
 
 
         checkPointChecker = GameObject.Find("CheckPoint Checker").GetComponent<CheckPointChecker>();
+        playerAudio = GetComponent<AudioSource>();
     }
     // Update is called once per frame
     void Update()
@@ -83,6 +87,7 @@ public class PlayerController : MonoBehaviour
             body.AddRelativeForce(new Vector3(0, 1, 0) * jumpHeight);
             jumps ++;
             setJumps();
+            playerAudio.PlayOneShot(jumpSound, .8f);
             StartCoroutine(Flash(jumpsHighlightText));
         }
     }
@@ -170,4 +175,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(.2f);
         flash.gameObject.SetActive(false);
     }
+
+    
 }

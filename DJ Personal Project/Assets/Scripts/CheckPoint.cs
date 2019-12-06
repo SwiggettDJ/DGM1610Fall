@@ -12,7 +12,7 @@ public class CheckPoint : MonoBehaviour
     private ParticleSystem blueParticles;
     private Light blueLight;
 
-    private void Start()
+    private void Awake()
     {
         pos = new Vector3(transform.position.x, transform.position.y + 1.05f, transform.position.z);
         blueLight = GetComponentInChildren<Light>();

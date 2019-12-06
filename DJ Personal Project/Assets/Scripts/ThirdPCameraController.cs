@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ThirdPCameraController : MonoBehaviour
 {
@@ -33,6 +34,12 @@ public class ThirdPCameraController : MonoBehaviour
             xAxis = 0;
             yAxis = 0;
         }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            OpenMenu();
+        }
+
     }
 
     void LateUpdate()
@@ -44,5 +51,13 @@ public class ThirdPCameraController : MonoBehaviour
         transform.LookAt(target);
 
         target.rotation = Quaternion.Euler(yAxis, xAxis, 0);
+    }
+
+    //Pulls up main menu when you press the "m" key
+    private void OpenMenu()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        SceneManager.LoadScene(0);
     }
 }
