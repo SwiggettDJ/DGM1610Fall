@@ -54,7 +54,7 @@ public class ThirdPCameraController : MonoBehaviour
     }
 
     //Pulls up main menu when you press the "m" key
-    private void OpenMenu()
+    public void OpenMenu()
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;

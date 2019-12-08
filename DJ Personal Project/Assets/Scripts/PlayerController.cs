@@ -10,8 +10,7 @@ public class PlayerController : MonoBehaviour
     private float forward, horizontal;
     private float slipMultiplier = 5f;
     private float groundMultiplier = 2f;
-    private float nextJump = 0.0f;
-    private float interval = 0.2f;
+
     private int maxJumps = 2;
     private int jumps = 0;
     public int totalJumps = -1;
@@ -81,10 +80,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //Jump force
-        if (Input.GetKeyDown("space") && Time.time > nextJump && jumps < maxJumps)
+        if (Input.GetKeyDown("space") && jumps < maxJumps)
         {
-            //makes it so jump can only be pressed every interval
-            nextJump = Time.time + interval;
             body.AddRelativeForce(new Vector3(0, 1, 0) * jumpHeight);
             jumps ++;
             setJumps();
@@ -120,12 +117,12 @@ public class PlayerController : MonoBehaviour
     //makes sure you don't try to fly too high... will probably put left and right bounds here too
     private void TooHigh()
     {
-        if(body.transform.position.y > 25)
+        if(body.transform.position.y > 50)
         {
-            body.transform.position = new Vector3(body.transform.position.x, 25, body.transform.position.z);
+            body.transform.position = new Vector3(body.transform.position.x, 50, body.transform.position.z);
             body.velocity = new Vector3(body.velocity.x, 0, body.velocity.z);
         }
-        if (body.transform.position.y < -5)
+        if (body.transform.position.y < -10)
         {
             KillPlayer();
         }

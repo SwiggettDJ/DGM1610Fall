@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
@@ -9,11 +10,14 @@ public class MainMenu : MonoBehaviour
     public AudioClip clickSound;
     private AudioSource buttonAudio;
 
+    private MainMenu menuToOpen;
+
     private bool mouseEnter;
 
     void Start()
     {
         buttonAudio = GetComponent<AudioSource>();
+        Time.timeScale = 1;
     }
 
     public void SelectSound()
@@ -34,11 +38,29 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
     }
 
-    public void OpenLevelSelectMenu()
+    public void SwitchMenu()
     {
-        for(int i=0; i < transform.GetChildCount(); i++)
+        if (name == "Main Menu")
+        {
+            menuToOpen = GameObject.Find("Level Select Menu").GetComponent<MainMenu>();
+        }
+        if (name == "Level Select Menu")
+        {
+            menuToOpen = GameObject.Find("Main Menu").GetComponent<MainMenu>();
+        }
+
+        for (int i=0; i < transform.GetChildCount(); i++)
         {
             transform.GetChild(i).gameObject.SetActive(false);
+        }
+        for (int i = 0; i < menuToOpen.transform.GetChildCount(); i++)
+        {
+            menuToOpen.transform.GetChild(i).gameObject.SetActive(true);
+        }
+        if (name == "Main Menu")
+        {
+            GameObject.Find("HighScore 01").GetComponent<TextMeshProUGUI>().text = "HighScore: " + PlayerPrefs.GetInt("HighScore01");
+            GameObject.Find("HighScore 02").GetComponent<TextMeshProUGUI>().text = "HighScore: " + PlayerPrefs.GetInt("HighScore02");
         }
     }
 }

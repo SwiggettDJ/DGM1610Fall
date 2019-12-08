@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class CheckPointChecker : MonoBehaviour
@@ -11,6 +12,7 @@ public class CheckPointChecker : MonoBehaviour
     public int score = 0;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI scoreHighlightText;
+    public TextMeshProUGUI HighScoreText;
     public TextMeshProUGUI parText;
     public TextMeshProUGUI parHighlightText;
 
@@ -40,6 +42,15 @@ public class CheckPointChecker : MonoBehaviour
 
         player.transform.position = lastCheckPoint.pos;
         player.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            HighScoreText.text = "HighScore " + PlayerPrefs.GetInt("HighScore01", 0);
+        }
+        if (SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            HighScoreText.text = "HighScore " + PlayerPrefs.GetInt("HighScore02", 0);
+        }
     }
 
 
@@ -66,7 +77,37 @@ public class CheckPointChecker : MonoBehaviour
                 //turn next checkpoint on
                 test.GetComponent<CheckPoint>().Toggle();
             }
+            
         }
+        if (lastCheckPoint.nextPar == 0)
+        {
+            //If this is the last checkpoint load level select and set highscore
+            if (score > PlayerPrefs.GetInt("HighScore01", 0) && SceneManager.GetActiveScene().buildIndex == 1)
+            {
+                PlayerPrefs.SetInt("HighScore01", score);
+                //PlayerPrefs.SetInt("LastLevel", 1);
+            }
+            if (score > PlayerPrefs.GetInt("HighScore02", 0) && SceneManager.GetActiveScene().buildIndex == 2)
+            {
+                PlayerPrefs.SetInt("HighScore02", score);
+                //PlayerPrefs.SetInt("LastLevel", 2);
+            }
+            StartCoroutine(EndLevel());
+        }
+
     }
 
+    public void OpenMenu()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        SceneManager.LoadScene(0);
+    }
+
+    public IEnumerator EndLevel()
+    {
+        Time.timeScale = .5f;
+        yield return new WaitForSeconds(1f);
+        OpenMenu();
+    }
 }
